@@ -187,8 +187,11 @@ function createNavigationOptions(params) {
       ...navigationParams,
       ...screenProps,
     };
+
+    const noAnimation = state.navigation.state.params.noAnimation
+
     const res = {
-      animationEnabled: !(type === ActionConst.REPLACE || type === 'replace'  || type === ActionConst.RESET || type === 'reset'),
+      animationEnabled: !(type === ActionConst.REPLACE || type === 'replace' || type === ActionConst.RESET || type === 'reset' || noAnimation),
       ...props,
       cardStyle: navigationParams.cardStyle || cardStyle,
       headerBackImage: navigationParams.backButtonImage || backButtonImage,
@@ -473,8 +476,8 @@ function uniteParams(routeName, params) {
   return res;
 }
 
-const defaultSuccess = () => {};
-const defaultFailure = () => {};
+const defaultSuccess = () => { };
+const defaultFailure = () => { };
 
 export default class NavigationStore {
   getStateForAction = null;
@@ -764,8 +767,7 @@ export default class NavigationStore {
           'actions',
           'props',
           'type',
-          `return function ${
-            key.replace(/\W/g, '_') // eslint-disable-line no-new-func
+          `return function ${key.replace(/\W/g, '_') // eslint-disable-line no-new-func
           }(params){ actions.execute(type, '${key}', props, params)}`,
         )(this, { error: '', ...commonProps, ...props }, type);
       }
